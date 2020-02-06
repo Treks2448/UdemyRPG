@@ -13,7 +13,7 @@ namespace RPG.Combat
         [SerializeField] float weaponDamage = 5f;
 
         // Private variables
-        private Transform target;
+        private Health target;
         float timeSinceLastAttack = 0f;
         
         // Unity specific functions
@@ -21,9 +21,10 @@ namespace RPG.Combat
         {
             timeSinceLastAttack += Time.deltaTime;
             if (target == null) { return; }
+            if (target.IsDead()) { return; }
             if (!GetIsInRange())
             {
-                GetComponent<Mover>().MoveTo(target.position);
+                GetComponent<Mover>().MoveTo(target.transform.position);
             }
             else
             {
@@ -35,25 +36,26 @@ namespace RPG.Combat
         // Animation event
         void Hit()
         {
-            target.gameObject.GetComponent<Health>().TakeDamage(weaponDamage);
+            target.TakeDamage(weaponDamage);
         }
 
         // Public functions
         public void Attack(CombatTarget combatTarget)
         {
             GetComponent<ActionScheduler>().StartAction(this);
-            target = combatTarget.transform;
+            target = combatTarget.GetComponent<Health>();
         }
 
         public void Cancel()
         {
             target = null;
+            GetComponent<Animator>().SetTrigger("StopAttack");
         }
 
         // Private functions
         private bool GetIsInRange()
         {
-            return Vector3.Distance(target.position, transform.position) < weaponRange; ;
+            return Vector3.Distance(target.transform.position, transform.position) < weaponRange;
         }
         private void AttackBehaviour()
         {
