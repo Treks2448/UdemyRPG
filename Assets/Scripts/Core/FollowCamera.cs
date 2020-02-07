@@ -7,12 +7,14 @@ namespace RPG.Core
     public class FollowCamera : MonoBehaviour
     {
         // Variables visible in editor
-        [SerializeField]
-        Transform target;
+        [SerializeField] Transform target;
+        [SerializeField] float lerpSpeed = 1f;
+
+        private Vector3 velocity = Vector3.zero; 
 
         void LateUpdate()
         {
-            transform.position = target.transform.position;
+            transform.position = Vector3.SmoothDamp(transform.position, target.position, ref velocity, lerpSpeed);
         }
     }
 }

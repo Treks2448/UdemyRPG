@@ -36,7 +36,7 @@ namespace RPG.Control
             RaycastHit hit;
             if (Physics.Raycast(GetMouseRay(), out hit))
             {
-                if (Input.GetButton("Fire1"))
+                if (Input.GetMouseButton(0))
                 {
                     GetComponent<Mover>().StartMoveAction(hit.point);
                 }
@@ -53,9 +53,8 @@ namespace RPG.Control
                 CombatTarget target = hit.collider.gameObject.GetComponent<CombatTarget>();
                 if (target == null) { continue; }
 
-
                 if (!GetComponent<Fighter>().CanAttack(target.gameObject)) { continue; }
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButton(0))
                 {
                     GetComponent<Fighter>().Attack(target.gameObject);
                 }

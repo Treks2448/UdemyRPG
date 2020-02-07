@@ -12,8 +12,9 @@ namespace RPG.Control
         // Variables visible in editor
         [SerializeField] float chaseDistance = 5f;
         [SerializeField] float suspiciousTime = 3f;
-        [SerializeField] PatrolPath patrolPath;
+        [SerializeField] float dwellingTime = 1f;
         [SerializeField] float waypointTolerance = 1f;
+        [SerializeField] PatrolPath patrolPath;
 
         // Private variables
         Fighter fighter;
@@ -23,6 +24,7 @@ namespace RPG.Control
 
         Vector3 guardLocation;
         float timeSinceLastSawPlayer = Mathf.Infinity;
+        float timeAtWaypoint = Mathf.Infinity;
         int currentWaypointIndex = 0; 
 
         // Unity functions
@@ -69,7 +71,12 @@ namespace RPG.Control
             {
                 if (AtWaypoint())
                 {
-                    CycleWaypoint();
+                    if (timeAtWaypoint > dwellingTime)
+                    {
+                        CycleWaypoint();
+                        timeAtWaypoint = 0f;
+                    }
+                    timeAtWaypoint += Time.deltaTime;
                 }
                 nextPosition = GetCurrentWaypoint();
             }
