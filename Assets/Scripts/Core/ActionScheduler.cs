@@ -6,7 +6,8 @@ namespace RPG.Core
 {
     public class ActionScheduler : MonoBehaviour
     {
-        IAction currentAction;
+        // Private variables
+        private IAction currentAction;
 
         // Public functions
         public void StartAction(IAction action)
@@ -14,6 +15,11 @@ namespace RPG.Core
             if (currentAction == action) { return; }
             if (currentAction != null) { currentAction.Cancel(); }
             currentAction = action;
+        }
+        
+        public void CancelCurrentAction()
+        {
+            StartAction(null);
         }
     }
 }

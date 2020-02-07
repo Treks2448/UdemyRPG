@@ -14,15 +14,18 @@ namespace RPG.Movement
 
         // Private member variables
         NavMeshAgent navMeshAgent;
+        Health health;
 
         // Unity specific functions
         void Start()
         {
             navMeshAgent = GetComponent<NavMeshAgent>();
+            health = GetComponent<Health>();
         }
 
         void Update()
         {
+            navMeshAgent.enabled = !health.IsDead();
             UpdateAnimator();
         }
 
